@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Receipt Template</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        color: #000;
+        background-color: #fff;
+        margin: 0;
+        padding: 0;
+      }
+      p {
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 15px;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .header-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .logo {
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 100px;
+      }
+      .img {
+        width: 70px;
+        height: 70px;
+      }
+      .title {
+        display: inline-block;
+        vertical-align: middle;
+      }
+      .header h1 {
+        font-size: 18px;
+        margin: 0;
+        font-weight: bold;
+      }
+      .header p {
+        font-size: 12px;
+        margin: 2px 0;
+      }
+      .delivery-section {
+        text-align: center;
+        font-size: 14px;
+        font-weight: bold;
+        background-color: #f1f1f1;
+        padding: 5px;
+        margin-bottom: 10px;
+      }
+      .info {
+        font-size: 12px;
+        margin-bottom: 10px;
+        background-color: #f1f1f1;
+      }
+      .info .label {
+        font-weight: bold;
+      }
+      .info p {
+        margin: 4px 0;
+      }
+      .item-table,
+      .totals-table {
+        width: 100%;
+        font-size: 12px;
+        margin-top: 10px;
+        border-collapse: collapse;
+      }
+      .item-table th,
+      .item-table td,
+      .totals-table th {
+        padding: 8px;
+        text-align: left;
+        border: 1px solid #ddd;
+      }
+      .item-table th {
+        background-color: #f5f5f5;
+        font-weight: bold;
+      }
+      .totals-table {
+        margin-top: 10px;
+      }
+      .totals-table td {
+        text-align: right;
+        font-weight: bold;
+      }
+      .footer {
+        text-align: center;
+        font-size: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header Section -->
+      <div class="header">
+        <div class="info">
+          <table style="width: 100%">
+            <tr>
+              <!-- Left Column -->
+              <td style="text-align: right; vertical-align: top; width: 50%">
+                <img src="{{ logo_url }}" alt="Logo" style="width: 110px" />
+              </td>
+
+              <!-- Right Column -->
+              <td style="text-align: left; width: 50%">
+                <h1>SSS FRESH CHICKEN & MEAT</h1>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <p>AL Furjan Market 34,Shop 11</p>
+        <p>Near AL Thumama Stadium</p>
+        <p>Doha - Qatar</p>
+        <p>C.R.NO :101008</p>
+      </div>
+
+      <!-- Delivery Section -->
+
+      <div class="delivery-section">
+        {% if is_delivery %}
+        <p>Delivery</p>
+        <p>
+          <span class="label" style="font-weight: 500">Token No:</span>
+          #000{{id}}
+        </p>
+        {% else %}
+        <p>Take away</p>
+        <p>
+          <span class="label" style="font-weight: 500">Token No:</span>
+          #000{{id}}
+        </p>
+        {% endif %}
+      </div>
+
+      {% if location %}
+      <p><span class="label">Location:</span> {{ location }}</p>
+      {% endif %} {% if building %}
+      <p><span class="label">Building :</span> {{ building }}</p>
+      {% endif %} {% if Street %}
+      <p><span class="label">Street:</span> {{ Street }}</p>
+      {% endif %} {% if Zone %}
+      <p><span class="label">Zone:</span> {{ Zone }}</p>
+      {% endif %}
+
+      <div class="info">
+        <p><span class="label">Customer:</span> {{ name }}</p>
+      </div>
+      <p><span class="label">Time slot:</span> {{ time_slot }}</p>
+
+      <table class="item-table">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Price</th>
+            <th>Qty</th>
+            <th>Sub Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+          <tr>
+            <td>{{ item.product_name }}</td>
+            <td>{{ item.price }}</td>
+            <td>{{ item.count }}</td>
+            <td>{{ item.sub_total }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <!-- Totals Table -->
+      <table class="totals-table">
+        <tr>
+          <td>Total:</td>
+          <td>{{ total }}</td>
+        </tr>
+      </table>
+
+      <!-- Footer Section -->
+      <div class="footer">
+        <h5>Thank you! Visit Again</h5>
+        <h5>
+          Send hi to 974-30162002 or scan the QR code to get instant Promotion
+        </h5>
+
+        <img class="img" src="{{ qr }}" alt="QR code" />
+      </div>
+    </div>
+  </body>
+</html>

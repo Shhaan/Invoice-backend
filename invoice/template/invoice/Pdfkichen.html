@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Receipt</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+
+        max-width: 100%;
+        margin: auto;
+      }
+
+      .order-details {
+        margin: 20px 0;
+      }
+      .order-details p {
+        margin: 5px 0;
+      }
+      .item-table,
+      .totals-table {
+        width: 100%;
+        font-size: 12px;
+        margin-top: 10px;
+        border-collapse: collapse;
+      }
+      .item-table th,
+      .item-table td,
+      .totals-table th {
+        padding: 8px;
+        text-align: left;
+        border: 1px solid #ddd;
+      }
+      .item-table th {
+        font-weight: bold;
+      }
+
+      .totals-table td {
+        text-align: right;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h2>Order Receipt</h2>
+    </div>
+
+    {% if is_delivery %}
+    <h2
+      style="
+        background-color: rgb(47, 46, 46);
+        color: white;
+        margin: 0;
+        text-align: center;
+        padding: 0;
+      "
+    >
+      Delivery
+    </h2>
+    {% else %}
+    <h2
+      style="
+        background-color: rgb(47, 46, 46);
+        color: white;
+        margin: 0;
+        text-align: center;
+        padding: 0;
+      "
+    >
+      Take away
+    </h2>
+    {% endif %}
+
+    <div class="order-details">
+      <p><span class="label">Token No:</span> #000{{id}}</p>
+      <p><span class="label">Customer:</span> {{ name }}</p>
+
+      <p><span class="label">Order Time:</span> {{ time_slot }}</p>
+    </div>
+
+    <table class="item-table">
+      <thead>
+        <tr>
+          <th>Item</th>
+
+          <th>Qty</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in items %}
+        <tr>
+          <td>{{ item.product_name }}</td>
+
+          <td>{{ item.count }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+</html>
