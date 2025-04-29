@@ -12,11 +12,15 @@ SECRET_KEY = 'django-insecure-+51d#21@u3#bm(w081$wzn44zfxnss6^p5hej8^0)7c$jab!gh
  
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app']
+ALLOWED_HOSTS = ['.vercel.app','127.0.0.1']
 
   
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = True
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://127.0.0.1:8000/'
+]
 
 
 INSTALLED_APPS = [
@@ -30,6 +34,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
    'rest_framework.authtoken',
+    "cloudinary",
+    "cloudinary_storage",
     'cookieapp',
     'main',
     'invoice'
@@ -79,6 +85,16 @@ DATABASES = {
     'default': dj_database_url.config(default=DB_URL, conn_max_age=1800)
 }
  
+ 
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dl1qukeww',
+    'API_KEY': '398438651375956',
+    'API_SECRET': 'R7nVCIw6M5gaAQRvi_-NNopPPDE',
+}
+
 
 
 REST_FRAMEWORK = {
