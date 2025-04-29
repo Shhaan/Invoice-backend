@@ -1,7 +1,7 @@
 
 from pathlib import Path
 import os
- 
+import dj_database_url
  
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -51,6 +51,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'backend.urls'
 
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -73,16 +74,9 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
  
   
-
+DB_URL = 'postgresql://postgres:TmbMgAwTAyZqAXgKztBjxiSuhBPUcwNW@maglev.proxy.rlwy.net:12202/railway'
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config(default=DB_URL, conn_max_age=1800)
 }
  
 
