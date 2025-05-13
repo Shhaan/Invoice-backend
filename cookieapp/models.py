@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
-
+from customer.models import Tenant
 class AccountManager(BaseUserManager):
     def create_user(self, email, password=None, **kwargs):
         if not email:
@@ -15,17 +15,29 @@ class AccountManager(BaseUserManager):
 
         return user
 
-    def create_superuser(self, email, password, **kwargs):
+    def create_admin_user(self, email, password, **kwargs):
         user = self.create_user(
             email=self.normalize_email(email),
             password=password
         )
 
         user.is_admin = True
-        user.is_superuser = True
         user.is_staff = True
         user.save(using=self._db)
         return user  # Add return statement here to return the superuser
+    
+    def create_super_user(self, email, password, **kwargs):
+        user = self.create_user(
+            email=self.normalize_email(email),
+            password=password
+        )
+
+        user.is_admin = True
+        user.is_staff = True
+        user.is_superuser =True
+        user.save(using=self._db)
+        return user  # Add return statement here to return the superuser
+
 
 
 class Account(AbstractBaseUser, PermissionsMixin):
@@ -36,7 +48,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    tenent  = models.OneToOneField(Tenant,null=True,on_delete=models.CASCADE)
     objects = AccountManager()
 
     USERNAME_FIELD = "email"

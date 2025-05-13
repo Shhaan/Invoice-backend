@@ -17,10 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path 
 from .views import *
+from cookieapp.admin import custom_admin_site
 urlpatterns = [
      
-    path('admin/', admin.site.urls),
-    # path('create-tenat-user',Tenents)
+    path('admin/', custom_admin_site.urls),
+    path('create-tenat-user',TenentsUser.as_view())
  
 
  
