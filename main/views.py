@@ -9,6 +9,11 @@ from rest_framework import status,permissions,parsers
 from django.db.models import Count,Q,Sum
 from invoice.models import Invoice,InvoiceItem
 from .util import get_today_time_slots,get_tomorrow_time_slots
+from django.http import HttpResponse
+
+def index(req):
+    return HttpResponse(f"{req.tenant}")
+
 class CategoryView(APIView):
     def get(self, request):
         data  =request.GET

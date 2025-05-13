@@ -17,7 +17,7 @@ urlpatterns = [
     path('invoice/',Invoiceview.as_view()),
     path('product-customize/',ProductCustomize.as_view()),
     path('sale-details/',Saledetailview.as_view()),
-
+    path('',index,name='client_index')
 
 
 
