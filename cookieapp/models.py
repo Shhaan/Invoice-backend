@@ -49,6 +49,8 @@ class Account(AbstractBaseUser, PermissionsMixin):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     tenent  = models.OneToOneField(Tenant,null=True,on_delete=models.CASCADE)
+    company_name = models.CharField(max_length=200,default='ABC')
+    company_logo = models.ImageField(upload_to='logo',null=True)
     objects = AccountManager()
 
     USERNAME_FIELD = "email"

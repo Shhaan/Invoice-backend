@@ -18,10 +18,14 @@ from django.contrib import admin
 from django.urls import path 
 from .views import *
 from cookieapp.admin import custom_admin_site
+from cookieapp.views import LoginView 
+
 urlpatterns = [
-     
+
+
+    path('login/', LoginView.as_view(), name="login"),
     path('admin/', custom_admin_site.urls),
-    path('create-tenat-user',TenentsUser.as_view())
+    path('tenat-user/',TenentsUser.as_view())
  
 
  

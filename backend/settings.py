@@ -157,3 +157,7 @@ TENANT_MODEL = 'customer.Tenant'
 TENANT_DOMAIN_MODEL = 'customer.Domain'
 
 PUBLIC_SCHEMA_URLCONF ='customer.urls'
+
+DOMAIN = "http://{domain}:8000/"
+
+PRODUCTION = False

@@ -1,6 +1,9 @@
 from django.contrib import admin
 from django.contrib.admin import AdminSite 
 from .models import Account 
+from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.admin import TokenAdmin as DefaultTokenAdmin
+
 
 class CustomAdminSite(AdminSite):
     def has_permission(self, request):
@@ -16,3 +19,12 @@ class AccountAdmin(admin.ModelAdmin):
 
 custom_admin_site.register(Account, AccountAdmin)  
 
+
+class TokenAdmin(DefaultTokenAdmin):
+    def save_model(self, request, obj, form, change):
+        if not obj.key:
+            obj.save()  # This auto-generates the key
+        else:
+            super().save_model(request, obj, form, change)
+
+custom_admin_site.register(Token, TokenAdmin)

@@ -184,7 +184,7 @@ class BestSellerView(APIView):
 class Productsview(APIView):
     parser_classes = [parsers.MultiPartParser] 
  
-    def get(self, request):
+    def get(self, request): 
         category = request.GET.get('category', '')
         product_id = request.GET.get('id', '')
         search = request.GET.get('search', '').strip()

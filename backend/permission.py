@@ -1,6 +1,5 @@
 from rest_framework.permissions import BasePermission
-from customer.models import Tenant
-from main.models import Staff
+from customer.models import Tenant 
 
 class TenantAccessPermission(BasePermission):
  
@@ -22,12 +21,12 @@ class TenantAccessPermission(BasePermission):
             return request.user.tenant == current_tenant
 
         staff_id = request.session.get('staff_id')
-        if staff_id:
-            try:
-                staff = Staff.objects.get(id=staff_id)
-                return request.method in ['GET', 'HEAD', 'OPTIONS']
-            except Staff.DoesNotExist:
-                return False
+        # if staff_id:
+        #     try:
+        #         staff = Staff.objects.get(id=staff_id)
+        #         return request.method in ['GET', 'HEAD', 'OPTIONS']
+        #     except Staff.DoesNotExist:
+        #         return False
 
         return False
 
@@ -49,11 +48,16 @@ class TenantAccessPermission(BasePermission):
             return request.user.tenant == current_tenant
 
         staff_id = request.session.get('staff_id')
-        if staff_id:
-            try:
-                Staff.objects.get(id=staff_id)
-                return request.method in ['GET', 'HEAD', 'OPTIONS']
-            except Staff.DoesNotExist:
-                return False
+        # if staff_id:
+        #     try:
+        #         Staff.objects.get(id=staff_id)
+        #         return request.method in ['GET', 'HEAD', 'OPTIONS']
+        #     except Staff.DoesNotExist:
+        #         return False
 
-        return False
+        # return False
+    
+
+class TenantAccessSuperUserPermission(BasePermission):
+    def has_permission(self, request, view):
+        return bool(request.user and request.user.is_authenticated and request.user.is_superuser)
