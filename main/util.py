@@ -13,7 +13,7 @@ time_slots = {
         ("5:30 PM", "7:00 PM"),
         ("7:00 PM", "8:30 PM"),
         ("8:30 PM", "10:00 PM"),
-        ("11:00 PM", "1:00 AM"),
+
     ],
     'friday': [
         ("10:00 AM", "11:30 AM"),
@@ -32,17 +32,17 @@ def get_today_time_slots():
     today = datetime.now(qatar_tz)  # Use Qatar timezone
     day_name = today.strftime('%A').lower()
     time_slots_for_today = time_slots['friday'] if day_name == 'friday' else time_slots['default']
-    
+
     current_time = today.time()  # Current time as a time object
-    
+
     future_slots_today = []
     for start, end in time_slots_for_today:
         # Convert start time to a time object for comparison
         start_time_obj = datetime.strptime(start, "%I:%M %p").time()
-        
+
         if start_time_obj >= current_time:
             future_slots_today.append(f"{start} - {end}")
-     
+
 
     return future_slots_today, today.strftime("%Y-%m-%d")
 

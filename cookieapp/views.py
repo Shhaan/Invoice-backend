@@ -11,8 +11,12 @@ class LoginView(APIView):
     authentication_classes = [TokenAuthentication]
 
     def post(self, request):
-        user = authenticate(username=request.data.get('email'), password=request.data.get('password'))
+        
+        user = authenticate(username=request.data.get('email'), password=request.data.get('password')) 
+
         if user:
+            if request.tenant != user.tenent:
+                return Response({'error': 'Invalid credentials'}, status=401)
             token, created = Token.objects.get_or_create(user=user)
             domain = Domain.objects.filter(tenant=user.tenent).first()
             return Response({'token': token.key,'domain':domain.domain}, status=status.HTTP_200_OK)

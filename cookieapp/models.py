@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 from customer.models import Tenant
+from enum import Enum
+
 class AccountManager(BaseUserManager):
     def create_user(self, email, password=None, **kwargs):
         if not email:
@@ -51,6 +53,12 @@ class Account(AbstractBaseUser, PermissionsMixin):
     tenent  = models.OneToOneField(Tenant,null=True,on_delete=models.CASCADE)
     company_name = models.CharField(max_length=200,default='ABC')
     company_logo = models.ImageField(upload_to='logo',null=True)
+    address = models.TextField()
+    phone = models.CharField(max_length=15, null=True, blank=True)
+    country_code = models.CharField(max_length=200,null=True,default='+91')
+
+
+
     objects = AccountManager()
 
     USERNAME_FIELD = "email"
@@ -63,3 +71,25 @@ class Account(AbstractBaseUser, PermissionsMixin):
 
     def has_module_perms(self, app_label):
         return True
+
+class SocialEnum(Enum):
+    FACEBOOK = "facebook"
+    INSTAGRAM = "instagram" 
+    YOUTUBE = "youtube"
+    MAP = "map" 
+    LINKEDIN = "linkedin" 
+    X = "x" 
+
+class SocialMedia(models.Model):
+    name = models.CharField(
+        max_length=20,
+        choices=[(item.value, item.name.title()) for item in SocialEnum]
+    )
+    link = models.URLField(blank=True, null=True)
+    user = models.ForeignKey(Account,on_delete=models.CASCADE)
+    def __str__(self):
+        return self.name
+
+
+
+

@@ -4,7 +4,10 @@ from rest_framework.response import Response
 from .serializer import *
 from rest_framework import status
 from backend.permission import TenantAccessSuperUserPermission
-class TenentsUser(APIView):
+from utils import get_response,CustomPageNumberPagination
+
+
+class TenentsUserMainView(APIView):
     permission_classes = [TenantAccessSuperUserPermission]
     def post(self, request):
         serializer = TenentUploadSerializer(data=request.data)
@@ -15,9 +18,30 @@ class TenentsUser(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request):
-        tenants = Tenant.objects.all() 
+
+        tenant_id = request.GET.get("id")
+
+        if tenant_id:
+            try:
+                tenant = Tenant.objects.get(id=tenant_id)
+                serializer = TenentDisplaySerializer(tenant)
+                return get_response(False, serializer.data, status.HTTP_200_OK)
+            except Tenant.DoesNotExist:
+                return get_response(True, {"error": "Tenant not found."}, status.HTTP_404_NOT_FOUND)
+
+        # If no ID is passed, return paginated list
+        tenants = Tenant.objects.all()
+        paginator = CustomPageNumberPagination()
+        page = paginator.paginate_queryset(tenants, request)
+
+        if page is not None:
+            serializer = TenentDisplaySerializer(page, many=True)
+            return paginator.get_paginated_response(serializer.data)
+
+        # Non-paginated response
         serializer = TenentDisplaySerializer(tenants, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return get_response(False, serializer.data, status.HTTP_200_OK)
+
 
     def put(self, request):
         tenant_id = request.data.get("id")

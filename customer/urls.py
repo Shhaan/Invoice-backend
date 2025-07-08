@@ -18,14 +18,19 @@ from django.contrib import admin
 from django.urls import path 
 from .views import *
 from cookieapp.admin import custom_admin_site
-from cookieapp.views import LoginView 
+from cookieapp.views import LoginView ,LogoutView
+from main.views import TenentsUser
 
 urlpatterns = [
 
 
     path('login/', LoginView.as_view(), name="login"),
     path('admin/', custom_admin_site.urls),
-    path('tenat-user/',TenentsUser.as_view())
+    path('tenant-user/',TenentsUserMainView.as_view()),
+    path('main/user-tenent-fetch/',TenentsUser.as_view()),
+    path('logout/', LogoutView.as_view(), name="logout"),
+
+    
  
 
  

@@ -1,9 +1,12 @@
 from rest_framework import serializers
 from .models import Tenant,Domain
-from cookieapp.models import Account
-from rest_framework.validators import ValidationError
+from cookieapp.models import Account,SocialMedia
 from django.conf import settings
 
+class SocialMediaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SocialMedia
+        exclude = ['id']
 
 class TenentUploadSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
@@ -43,7 +46,7 @@ class TenentUploadSerializer(serializers.Serializer):
 
         tenant = Tenant.objects.create(**validated_data)
         
-        domain_name = domain_name.lower() + '.localhost' if not settings.PRODUCTION else domain_name
+        domain_name = domain_name.lower()  
         Domain.objects.create(domain=domain_name, tenant=tenant, is_primary=True)
 
         account = Account.objects.create(
@@ -76,14 +79,24 @@ class TenentDisplaySerializer(serializers.ModelSerializer):
         except Domain.DoesNotExist:
             pass
         domain_url = settings.DOMAIN.format(domain=domain.domain) if domain else None
+        try:
+            social = SocialMedia.objects.filter(user=user)
+        except:
+            pass
         return {
             'id': instance.id,
             'name': instance.name,
+            'is_admin': user.is_admin if user else None,
+            "is_superuser":user.is_superuser if user else None,
             'schema_name': instance.schema_name,
             'logo': user.company_logo.url if user and user.company_logo else None,
             'company_name': user.company_name if user else None,
+            'address': user.address if user else None,
+            'phone': user.phone if user else None,
+            'country_code': user.country_code if user else None,
             'domain':domain_url,
             'email': user.email if user else None,
+            'social':SocialMediaSerializer(social,many=True).data if social.exists() else []
 
         }
     
@@ -133,7 +146,7 @@ class TenentUpdateSerializer(serializers.Serializer):
         # Domain update
         domain_name = validated_data.get('domain')
         if domain_name:
-            domain_name = domain_name.lower() + '.localhost' if not settings.PRODUCTION else domain_name
+            domain_name = domain_name.lower() 
             domain = Domain.objects.filter(tenant=instance).first()
             if domain:
                 domain.domain = domain_name

@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import *
-from invoice.views import Invoiceview
+from invoice.views import Invoiceview 
 urlpatterns = [
     path('category/',CategoryView.as_view(),name='category'), 
     path('deal/',DealView.as_view(),name='deal'), 
@@ -17,7 +17,14 @@ urlpatterns = [
     path('invoice/',Invoiceview.as_view()),
     path('product-customize/',ProductCustomize.as_view()),
     path('sale-details/',Saledetailview.as_view()),
-    path('',index,name='client_index')
+    path('carousel/',Carouselview.as_view()),
+    path('user-tenent-fetch/',TenentsUser.as_view()),
+    path('carousel/',Carouselview.as_view()),
+    path('configration/',Configrationview.as_view()),
+
+
+
+
 
 
 

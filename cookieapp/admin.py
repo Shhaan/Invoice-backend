@@ -1,9 +1,9 @@
 from django.contrib import admin
 from django.contrib.admin import AdminSite 
-from .models import Account 
+from .models import Account ,SocialMedia
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.admin import TokenAdmin as DefaultTokenAdmin
-
+from main.models import Product
 
 class CustomAdminSite(AdminSite):
     def has_permission(self, request):
@@ -28,3 +28,4 @@ class TokenAdmin(DefaultTokenAdmin):
             super().save_model(request, obj, form, change)
 
 custom_admin_site.register(Token, TokenAdmin)
+custom_admin_site.register(SocialMedia)
